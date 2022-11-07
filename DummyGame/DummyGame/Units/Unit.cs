@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace DummyGame.Units
 {
-    internal interface Unit
+    public abstract class Unit
     {
+        public int Health { get; set; }
+        public int Damage { get; set; }
+
+        protected abstract void Attack(Unit unit);
+        protected abstract void Death();
     }
 }
