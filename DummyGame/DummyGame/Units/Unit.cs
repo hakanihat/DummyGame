@@ -11,7 +11,7 @@ namespace DummyGame.Units
         public int Health { get; set; }
         public int Damage { get; set; }
 
-        protected abstract void Attack(Unit unit);
+        protected abstract bool Attack(Unit unit);
         protected abstract void Death();
     }
 }

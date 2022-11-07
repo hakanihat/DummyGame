@@ -9,6 +9,7 @@ namespace DummyGame.Units
     public class Mage : Unit
     {
         public int Mana   { get; set; }
+        public int readonly unitCost = 5;
 
         public Mage()
         {
@@ -17,22 +18,20 @@ namespace DummyGame.Units
             Damage = 2;
         }
 
-
-
         private void DoubleAtk()
         {
             Damage *= 2;
             Mana = 3;
         }
 
-        protected override void Attack(Unit unit)
-        {
-            ;
+        protected override bool Attack(Unit unit)
+        { 
+            unit.Health -= this.Damage;
         }
 
         protected override void Death()
         {
-            throw new NotImplementedException();
+            ~Mage();
         }
     }
 }
