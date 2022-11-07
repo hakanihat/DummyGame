@@ -1,8 +1,43 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class Class1
+namespace DummyGame.Units
 {
-	public Class1()
-	{
-	}
+    public class Archer : Unit
+    {
+        public int Focus { get; set; }
+        public int readonly unitCost = 3;
+
+        public Archer()
+        {
+            Health = 3;
+            Focus = 0;
+            Damage = 3;
+        }
+
+
+        protected override bool Attack(Unit unit)
+        {
+            Focus++;
+            unit.Health -= this.Damage;
+            if (Focus == 3 && unit != null)
+            {
+                unit.Health -= this.Damage;
+                return false;
+            }
+            else if (Focus == 3 && unit == null)
+            {
+                return true;
+            }
+            return false;   
+        }
+
+        protected override void Death()
+        {
+            ~Archer();
+        }
+    }
 }
