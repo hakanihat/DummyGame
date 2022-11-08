@@ -8,13 +8,13 @@ namespace DummyGame.Units
 {
     public class Berserker : Unit
     {
-        public int Rage = 0 { get; set; }
-        public int readonly unitCost = 4;
+        public int Rage  { get; set; }
+        public readonly int unitCost = 4;
 
         public Berserker()
         {
             Health = 5;
-            Mana = 3;
+            Rage = 0;
             Damage = 2;
         }
 
@@ -27,11 +27,12 @@ namespace DummyGame.Units
             {
             this.Health += 1;
             }
+            return true;
         }
 
-        protected override void Death()
+        protected override bool IsAlive()
         {
-            ~Berserker();
+            return Health > 0;
         }
     }
 }

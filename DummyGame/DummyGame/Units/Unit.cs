@@ -12,6 +12,6 @@ namespace DummyGame.Units
         public int Damage { get; set; }
 
         protected abstract bool Attack(Unit unit);
-        protected abstract void Death();
+        protected abstract bool IsAlive();
     }
 }

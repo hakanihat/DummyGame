@@ -9,7 +9,7 @@ namespace DummyGame.Units
     public class Archer : Unit
     {
         public int Focus { get; set; }
-        public int readonly unitCost = 3;
+        public readonly int unitCost = 3;
 
         public Archer()
         {
@@ -35,9 +35,10 @@ namespace DummyGame.Units
             return false;   
         }
 
-        protected override void Death()
+        protected override bool IsAlive()
         {
-            ~Archer();
+            return Health > 0;
+       
         }
     }
 }

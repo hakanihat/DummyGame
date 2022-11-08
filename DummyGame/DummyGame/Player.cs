@@ -11,9 +11,9 @@ namespace DummyGame
 
         public int UnitLimit { get; private set; }
 
-        public List<Unit> units  =  new List<Unit>(); 
+        public List<Unit>? units  =  new List<Unit>(); 
 
-        Player( )
+        public Player( )
         {
             Health = 10;
             Mana = 10;
@@ -23,6 +23,11 @@ namespace DummyGame
         private bool checkUnitLimit()
         {
             return units.Count != 3; 
+        }
+
+        public bool IsAlive()
+        {
+           return Health > 0;
         }
 
 
