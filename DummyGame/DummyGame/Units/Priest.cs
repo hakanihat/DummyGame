@@ -9,7 +9,7 @@ namespace DummyGame.Units
     public class Priest : Unit
     {
         public int Mana { get; set; }
-        public int readonly unitCost = 5;
+        public readonly int unitCost = 5;
 
         public Priest()
         {
@@ -32,11 +32,12 @@ namespace DummyGame.Units
         protected override bool Attack(Unit unit)
         {
             unit.Health -= this.Damage;
+            return true;
         }
 
-        protected override void Death()
+        protected override bool IsAlive()
         {
-            ~Priest();
+            return Health > 0;
         }
     }
 }
