@@ -10,6 +10,8 @@ namespace DummyGame.Units
     {
         public int Health { get; set; }
         public int Damage { get; set; }
+        
+        public Player? Owner { get; set; }
 
         protected abstract bool Attack(Unit unit);
         protected abstract bool IsAlive();

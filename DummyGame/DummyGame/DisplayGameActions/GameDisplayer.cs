@@ -14,7 +14,7 @@ namespace DummyGame.Units
         {
             Console.WriteLine("Welcome to Dummy Game! ");
         }
-        public void BoardDrawer(Unit[,] units)
+        public void BoardDrawer(GameBoard gameBoard)
         {
             Console.Clear();
             Console.WriteLine("\n\n");
@@ -23,28 +23,49 @@ namespace DummyGame.Units
             
 
             int i,j;
-            for(i=0; i<units.GetLength(0); i++)
+            for(i=0; i<gameBoard.board.GetLength(0); i++)
             {
                 int k = 5;
-                for (j=0; j<units.GetLength(1); j++)
+                for (j=0; j< gameBoard.board.GetLength(1); j++)
                 {
                     
                     Console.SetCursorPosition(k, m);
-                    switch (units[i, j])
+                    switch (gameBoard.board[i, j])
                     {
                         case null:
+                            Console.ResetColor();
                             Console.Write("_\t");
                             break;
                         case Archer:
+                            if(gameBoard.board[i, j].Owner == gameBoard.player1)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                            }
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write(">\t");
                             break;
                         case Berserker:
+                            if (gameBoard.board[i, j].Owner == gameBoard.player1)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                            }
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("#\t");
                             break;
                         case Mage:
+                            if (gameBoard.board[i, j].Owner == gameBoard.player1)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                            }
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("@\t");
                             break;
                         case Priest:
+                            if (gameBoard.board[i, j].Owner == gameBoard.player1)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                            }
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("%\t");
                             break;
 
@@ -77,20 +98,39 @@ namespace DummyGame.Units
             {
                 Console.WriteLine("Please, choose a number between 1 and 4");
             }
-
-            switch(ch)
+            if (gameBoard.player1.turnCheker)
             {
-                case 1:
-                    return new Archer();
-                case 2:
-                    return new Berserker();
-                case 3:
-                    return new Mage();
-                case 4:
-                    return new Priest();
-                default:
-                    return null;
+                switch (ch)
+                {
+                    case 1:
+                        return new Archer(gameBoard.player1);
+                    case 2:
+                        return new Berserker(gameBoard.player1);
+                    case 3:
+                        return new Mage(gameBoard.player1);
+                    case 4:
+                        return new Priest(gameBoard.player1);
+                    default:
+                        return null;
+                }
             }
+            else
+            {
+                switch (ch)
+                {
+                    case 1:
+                        return new Archer(gameBoard.player2);
+                    case 2:
+                        return new Berserker(gameBoard.player2);
+                    case 3:
+                        return new Mage(gameBoard.player2);
+                    case 4:
+                        return new Priest(gameBoard.player2);
+                    default:
+                        return null;
+                }
+            }
+ 
         }
 
         public void SelectPlaceForUnit(GameBoard gb)
@@ -150,6 +190,7 @@ namespace DummyGame.Units
             {
                 Console.WriteLine(gameBoard.player1.Name + "'s turn:\n");
                 gameBoard.player1.turnCheker = false;
+                SelectPlaceForUnit(gameBoard);
                 gameBoard.player2.turnCheker = true;
 
             }
@@ -157,6 +198,7 @@ namespace DummyGame.Units
             {
                 Console.WriteLine(gameBoard.player2.Name + "'s turn:\n");
                 gameBoard.player1.turnCheker = true;
+                SelectPlaceForUnit(gameBoard);
                 gameBoard.player2.turnCheker = false;
             }
            
