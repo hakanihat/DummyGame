@@ -9,8 +9,14 @@ namespace DummyGame.Units
 {
     public class GameDisplayer : IGameDisplayer
     {
+
+        public void WelcomeMessage()
+        {
+            Console.WriteLine("Welcome to Dummy Game! ");
+        }
         public void BoardDrawer(Unit[,] units)
         {
+            Console.Clear();
             Console.WriteLine("\n\n");
             
             int m = 5;
@@ -27,11 +33,21 @@ namespace DummyGame.Units
                     switch (units[i, j])
                     {
                         case null:
-                            Console.Write("*\t");
+                            Console.Write("_\t");
                             break;
-                        default:
-                            Console.Write("-\t");
+                        case Archer:
+                            Console.Write(">\t");
                             break;
+                        case Berserker:
+                            Console.Write("#\t");
+                            break;
+                        case Mage:
+                            Console.Write("@\t");
+                            break;
+                        case Priest:
+                            Console.Write("%\t");
+                            break;
+
                     }
                     k += 5;
                 }
@@ -39,6 +55,71 @@ namespace DummyGame.Units
                 m += 1;
             }
         }
+
+        public Unit? PickAnUnit(GameBoard gameBoard)
+        {
+            Console.WriteLine("Summon an unit:\n");
+            int ch = 0;
+            try
+            {
+                do
+                {
+                    Console.WriteLine("1.Archer - 3 mana");
+                    Console.WriteLine("2.Berserker - 4 mana");
+                    Console.WriteLine("3.Mage - 5 mana");
+                    Console.WriteLine("4.Priest - 5 mana");
+
+                    ch = Int32.Parse(Console.ReadLine());
+
+                } while (ch <= 0 && ch > 4);
+            }
+            catch(Exception )
+            {
+                Console.WriteLine("Please, choose a number between 1 and 4");
+            }
+
+            switch(ch)
+            {
+                case 1:
+                    return new Archer();
+                case 2:
+                    return new Berserker();
+                case 3:
+                    return new Mage();
+                case 4:
+                    return new Priest();
+                default:
+                    return null;
+            }
+        }
+
+        public void SelectPlaceForUnit(GameBoard gb)
+        {
+            int x, y;
+            Unit? unit = PickAnUnit(gb);
+            Dictionary<int,int> result = new Dictionary<int,int>();
+            try
+            {
+                do
+                {
+                    Console.WriteLine("Select a row: \n");
+                    x = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("Select a column: \n");
+                    y = Int32.Parse(Console.ReadLine());
+                    int[] coordinates = { x, y };
+                    gb.board.SetValue(unit, coordinates);
+                } while (x < 0 && x > GameBoard.X && y < 0 && y > GameBoard.Y);
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("\nPlease, select existing row and column!");
+            }
+                
+                                                   
+        }
+
+
 
         public void SetPlayersName(Player player1, Player player2)
         {
@@ -59,21 +140,44 @@ namespace DummyGame.Units
             Console.Clear();    
         }
 
-        public void TurnAnnouncer(Player player)
+        public void TurnAnnouncer(GameBoard gameBoard)
         {
-            Console.WriteLine(player.Name + "'s turn:\n");
-        }
+            if(!(gameBoard.player1.turnCheker || gameBoard.player2.turnCheker))
+            {
+                gameBoard.player1.turnCheker = true;
+            }
+            if(gameBoard.player1.turnCheker)
+            {
+                Console.WriteLine(gameBoard.player1.Name + "'s turn:\n");
+                gameBoard.player1.turnCheker = false;
+                gameBoard.player2.turnCheker = true;
 
-        public void WelcomeMessage()
-        {
+            }
+            else
+            {
+                Console.WriteLine(gameBoard.player2.Name + "'s turn:\n");
+                gameBoard.player1.turnCheker = true;
+                gameBoard.player2.turnCheker = false;
+            }
            
-            Console.WriteLine("Welcome to Dummy Game! ");
-
         }
 
-        public void WinnerAnnouncer(Player player)
+     
+
+        public void WinnerAnnouncer(GameBoard gameBoard)
         {
-            Console.WriteLine("Congratulation " + player.Name + "!");
+            if (!gameBoard.player1.IsAlive())
+            {
+                Console.WriteLine("Congratulation " + gameBoard.player1.Name + "!");
+            }
+            else if(!gameBoard.player2.IsAlive())
+            {
+                Console.WriteLine("Congratulation " + gameBoard.player2.Name + "!");
+            }
+            else
+            {
+                Console.WriteLine("DRAW!");
+            }
         }
 
        
