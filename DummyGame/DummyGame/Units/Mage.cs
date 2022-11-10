@@ -11,11 +11,12 @@ namespace DummyGame.Units
         public int Mana   { get; set; }
         public readonly int unitCost = 5;
 
-        public Mage()
+        public Mage(Player p )
         {
             Health = 5;
             Mana = 3;
             Damage = 2;
+            Owner = p;
         }
 
         private void DoubleAtk()

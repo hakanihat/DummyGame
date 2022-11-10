@@ -30,14 +30,12 @@ namespace DummyGame
         {
             GameDisplayer.WelcomeMessage();
             GameDisplayer.SetPlayersName(player1,player2);
-            GameDisplayer.BoardDrawer(board);
+            GameDisplayer.BoardDrawer(this);
 
             while (player1.IsAlive() && player2.IsAlive() && !gameOver)
             {
                 GameDisplayer.TurnAnnouncer(this);
-                GameDisplayer.SelectPlaceForUnit(this);
-
-                GameDisplayer.BoardDrawer(board);
+                GameDisplayer.BoardDrawer(this);
 
 
             }

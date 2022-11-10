@@ -11,11 +11,12 @@ namespace DummyGame.Units
         public int Mana { get; set; }
         public readonly int unitCost = 5;
 
-        public Priest()
+        public Priest(Player p)
         {
             Health = 5;
             Mana = 2;
             Damage = 1;
+            Owner = p;
         }
 
         private bool HealAnAlly(Unit unit)

@@ -11,11 +11,12 @@ namespace DummyGame.Units
         public int Rage  { get; set; }
         public readonly int unitCost = 4;
 
-        public Berserker()
+        public Berserker(Player p )
         {
             Health = 5;
             Rage = 0;
             Damage = 2;
+            Owner = p;  
         }
 
 

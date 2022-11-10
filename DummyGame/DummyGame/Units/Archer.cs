@@ -11,11 +11,12 @@ namespace DummyGame.Units
         public int Focus { get; set; }
         public readonly int unitCost = 3;
 
-        public Archer()
+        public Archer(Player p)
         {
             Health = 3;
             Focus = 0;
             Damage = 3;
+            Owner = p;  
         }
 
 

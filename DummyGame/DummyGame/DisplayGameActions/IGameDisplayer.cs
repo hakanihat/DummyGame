@@ -11,7 +11,7 @@ namespace DummyGame.Units
         public void WelcomeMessage();
         public void SetPlayersName(Player player1, Player player2);
         public void TurnAnnouncer(GameBoard gameBoard);
-        public void BoardDrawer(Unit[,] units);
+        public void BoardDrawer(GameBoard gameBoard);
         public void WinnerAnnouncer(GameBoard gameBoard);
 
         public Unit? PickAnUnit(GameBoard gameBoard);
