@@ -13,7 +13,14 @@ namespace DummyGame.Units
         
         public Player? Owner { get; set; }
 
+        public Dictionary<int, int>? Coordinates  { get; set; } = new Dictionary<int, int>();
+
         protected abstract bool Attack(Unit unit);
         protected abstract bool IsAlive();
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

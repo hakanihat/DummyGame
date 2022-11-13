@@ -15,6 +15,7 @@ namespace DummyGame
     {
         public readonly static int X = 3;
         public readonly static int Y = 4;
+        public bool isFirstTurn=true;
         public Player player1 = new Player();
         public Player player2 = new Player();
         public Unit?[,] board = new Unit[X, Y];
@@ -34,8 +35,17 @@ namespace DummyGame
 
             while (player1.IsAlive() && player2.IsAlive() && !gameOver)
             {
-                GameDisplayer.TurnAnnouncer(this);
+                Player p = GameDisplayer.TurnAnnouncer(this);
+                GameDisplayer.SelectPlaceForUnit(this, p);
                 GameDisplayer.BoardDrawer(this);
+                if (!isFirstTurn)
+                {
+                    GameDisplayer.MoveAUnit(this, p);          
+                    //GameDisplayer.AtkAUnit(this, p);
+                }
+                GameDisplayer.BoardDrawer(this);
+                isFirstTurn = false;
+
 
 
             }
