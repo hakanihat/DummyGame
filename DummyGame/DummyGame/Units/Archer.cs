@@ -9,7 +9,7 @@ namespace DummyGame.Units
     public class Archer : Unit
     {
         public int Focus { get; set; }
-        public readonly int unitCost = 3;
+        public static readonly int unitCost = 3;
 
         public Archer(Player p)
         {
@@ -40,6 +40,11 @@ namespace DummyGame.Units
         {
             return Health > 0;
        
+        }
+
+        public override string ToString()
+        {
+            return this.GetType().Name + " with coordinates [" + (Coordinates.First().Key+1) +","+ (Coordinates.First().Value + 1)+"]";
         }
     }
 }

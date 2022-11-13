@@ -10,7 +10,7 @@ namespace DummyGame
         public static int playercounter = 1;
 
         public bool turnCheker=false;
-        public int Mana { get; private set; }
+        public int Mana { get;  set; }
 
         public int UnitLimit { get; private set; }
 
