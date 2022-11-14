@@ -17,23 +17,29 @@ namespace DummyGame.Units
             Mana = 2;
             Damage = 1;
             Owner = p;
+            IsRanged = true;
         }
 
         private bool HealAnAlly(Unit unit)
         {
-            if (Mana > 0)
+            if (Mana > 0 && unit.Owner.Name == this.Owner.Name )
             {
-                unit.Health += 2;
+                unit.Health += 3;
                 this.Mana -= 1;
                 return true;
             }
             return false;
         }
 
-        protected override bool Attack(Unit unit)
+        public override int Attack(Unit unit)
         {
             unit.Health -= this.Damage;
-            return true;
+            return unit.Health;
+        }
+
+        public override void DirectAttack(Player p)
+        {
+            p.Health -= Damage;
         }
 
         protected override bool IsAlive()

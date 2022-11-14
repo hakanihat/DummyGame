@@ -17,6 +17,7 @@ namespace DummyGame.Units
             Mana = 3;
             Damage = 2;
             Owner = p;
+            IsRanged = true;
         }
 
         private void DoubleAtk()
@@ -25,10 +26,15 @@ namespace DummyGame.Units
             Mana = 3;
         }
 
-        protected override bool Attack(Unit unit)
+        public override int Attack(Unit unit)
         { 
             unit.Health -= this.Damage;
-            return true;
+            return unit.Health;
+        }
+
+        public override void DirectAttack(Player p)
+        {
+            p.Health -= Damage;
         }
 
         protected override bool IsAlive()

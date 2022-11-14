@@ -17,24 +17,27 @@ namespace DummyGame.Units
             Focus = 0;
             Damage = 3;
             Owner = p;  
+            IsRanged = true;
         }
 
 
-        protected override bool Attack(Unit unit)
+        public override int Attack(Unit unit)
         {
             Focus++;
             unit.Health -= this.Damage;
-            if (Focus == 3 && unit != null)
+            if (Focus == 3)
             {
                 unit.Health -= this.Damage;
-                return false;
+                return unit.Health;
             }
-            else if (Focus == 3 && unit == null)
-            {
-                return true;
-            }
-            return false;   
+            return unit.Health;
         }
+
+        public override void DirectAttack(Player p)
+        {
+            p.Health -= Damage;
+        }
+
 
         protected override bool IsAlive()
         {
@@ -46,5 +49,7 @@ namespace DummyGame.Units
         {
             return this.GetType().Name + " with coordinates [" + (Coordinates.First().Key+1) +","+ (Coordinates.First().Value + 1)+"]";
         }
+
+     
     }
 }

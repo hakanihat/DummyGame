@@ -17,18 +17,25 @@ namespace DummyGame.Units
             Rage = 0;
             Damage = 2;
             Owner = p;  
+            IsRanged = false;
         }
 
 
-        protected override bool Attack(Unit unit)
+        public override int Attack(Unit unit)
         {
             Rage++;
             unit.Health -= this.Damage;
             if(Rage == 2)
             {
             this.Health += 1;
+            Rage = 0;
             }
-            return true;
+            return unit.Health;
+        }
+
+        public override void DirectAttack(Player p)
+        {
+            p.Health -= Damage;
         }
 
         protected override bool IsAlive()

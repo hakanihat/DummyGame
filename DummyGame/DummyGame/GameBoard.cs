@@ -40,8 +40,9 @@ namespace DummyGame
                 GameDisplayer.BoardDrawer(this);
                 if (!isFirstTurn)
                 {
-                    GameDisplayer.MoveAUnit(this, p);          
-                    //GameDisplayer.AtkAUnit(this, p);
+                    GameDisplayer.MoveAUnit(this, p);
+                    GameDisplayer.BoardDrawer(this);
+                    GameDisplayer.AtkPhase(this, p);
                 }
                 GameDisplayer.BoardDrawer(this);
                 isFirstTurn = false;
