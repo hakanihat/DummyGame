@@ -18,7 +18,8 @@ namespace DummyGame.Units
         {
             Console.Clear();
             Console.WriteLine("\n\n");
-            
+            Console.WriteLine(gameBoard.player1.Name+"'s stats: HP - " + gameBoard.player1.Health+"\t Mana - "+ gameBoard.player1.Mana );
+            Console.WriteLine(gameBoard.player2.Name + "'s stats: HP - " + gameBoard.player2.Health + "\t Mana - " + gameBoard.player2.Mana);
             int m = 5;
             
 
@@ -169,9 +170,30 @@ namespace DummyGame.Units
             {
                 return;
             }
+            else if (p.Name == gb.player1.Name)
+            {
+                do
+                {
+                    try
+                    {
+                        Console.WriteLine("Select a row: \n");
+                        x = Int32.Parse(Console.ReadLine());
+                        Console.WriteLine("Select a column: \n");
+                        y = Int32.Parse(Console.ReadLine());            
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("\nPlease, select existing place and it must be empty!");
+                    }
+                } while ((x < 1 || x > GameBoard.X) || (y < 1 || y > 2) || gb.board[x-1,y-1]!=null);
+
+                int[] coordinates = { x - 1, y - 1 };
+                unit.Coordinates.Add(coordinates[0], coordinates[1]);
+                p.units.Add(unit);
+                gb.board.SetValue(unit, coordinates);
+            }
             else
             {
-                Dictionary<int, int> result = new Dictionary<int, int>();
                 do
                 {
                     try
@@ -182,16 +204,18 @@ namespace DummyGame.Units
                         Console.WriteLine("Select a column: \n");
                         y = Int32.Parse(Console.ReadLine());
 
-                        int[] coordinates = { x - 1, y - 1 };
-                        unit.Coordinates.Add(coordinates[0], coordinates[1]);
-                        p.units.Add(unit);
-                        gb.board.SetValue(unit, coordinates);
                     }
                     catch (Exception)
                     {
                         Console.WriteLine("\nPlease, select existing row and column!");
                     }
-                } while ((x < 1 || x > GameBoard.X) && (y < 1 || y > GameBoard.Y));
+                } while ((x < 1 || x > GameBoard.X) || (y < 3 || y > GameBoard.Y));
+
+                int[] coordinates = { x - 1, y - 1 };
+                unit.Coordinates.Add(coordinates[0], coordinates[1]);
+                p.units.Add(unit);
+                gb.board.SetValue(unit, coordinates);
+
             }
 
         }
@@ -277,7 +301,7 @@ namespace DummyGame.Units
         {
             int ch = -1;
 
-            if(p.units == null)
+            if(p.units == null || p.units.Count < 1)
             {
                 return;
             }
@@ -371,6 +395,179 @@ namespace DummyGame.Units
                 }
             }while(true);
             
+        }
+
+
+        private Player whichOneTakesDmg(GameBoard gb)
+        {
+            if (!gb.player1.turnCheker)
+                return gb.player1;
+            return gb.player2;
+        }
+        public void AtkPhase(GameBoard gameBoard, Player p)
+
+        {
+            Player p2 = whichOneTakesDmg(gameBoard);
+            int ch = -1;
+            if (p.units == null || p.units.Count < 1)
+            {
+                return;
+            }
+            do
+            {
+                Console.WriteLine("\nSelect a unit:\n");
+
+                for (int i = 0; i < p.units.Count; i++)
+                {
+                    Console.WriteLine(i + 1 + ". " + p.units[i].ToString() + "\n");
+                }
+                try
+                {
+                    ch = Int32.Parse(Console.ReadLine());
+                    ch--;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Select proper num!\n");
+                }
+
+
+            } while (ch < 0 || ch > p.units.Count);
+            Unit unit = p.units[ch];
+            int x = unit.Coordinates.Keys.First();
+            int y = unit.Coordinates.Values.First();
+
+            int enemyHp;
+            if (p.Name == gameBoard.player1.Name)
+            {
+
+
+                if (unit.IsRanged)
+                {
+                    if (p.Name == gameBoard.player1.Name && y > 1)
+                    {
+                        unit.DirectAttack(p2);
+                        gameBoard.board[unit.Coordinates.Keys.First(), unit.Coordinates.Values.First()] = null;
+                        p.units.Remove(unit);
+                    }
+                    
+                    else if (gameBoard.board[x, y + 2] != null && gameBoard.board[x, y + 1].Owner != unit.Owner)
+                    {
+                        Unit unit2 = gameBoard.board[x, y + 2];
+                        enemyHp = unit.Attack(unit2);
+                        if (enemyHp <= 0)
+                        {
+                            gameBoard.board[unit2.Coordinates.Keys.First(), unit2.Coordinates.Values.First()] = null;
+                            p2.units.Remove(unit2);
+                            p2.Health += enemyHp;
+                        }
+                    }
+                    else if (gameBoard.board[x, y + 1] != null && gameBoard.board[x, y + 1].Owner != unit.Owner)
+                    {
+                        Unit unit2 = gameBoard.board[x, y + 1];
+                        enemyHp = unit.Attack(unit2);
+                        if (enemyHp <= 0)
+                        {
+                            gameBoard.board[unit2.Coordinates.Keys.First(), unit2.Coordinates.Values.First()] = null;
+                            p2.units.Remove(unit2);
+                            p2.Health += enemyHp;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n Keep fighting with the air dummy!\n");
+                    }
+                }
+                else
+                {
+                    if(p.Name == gameBoard.player1.Name && y > 2)
+                    {
+                        unit.DirectAttack(p2);
+                        gameBoard.board[unit.Coordinates.Keys.First(), unit.Coordinates.Values.First()] = null;
+                        p.units.Remove(unit);
+                    }
+                    
+                    else if (gameBoard.board[x, y + 1] != null && gameBoard.board[x, y + 1].Owner != unit.Owner)
+                    {
+                        Unit unit2 = gameBoard.board[x, y + 1];
+                        enemyHp = unit.Attack(unit2);
+                        if (enemyHp <= 0)
+                        {
+                            gameBoard.board[unit2.Coordinates.Keys.First(), unit2.Coordinates.Values.First()] = null;
+                            p2.units.Remove(unit2);
+                            p2.Health += enemyHp;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n Keep fighting with the air dummy!\n");
+                    }
+                }
+            }
+            else
+            {
+                if (unit.IsRanged)
+                {
+                    if (p.Name == gameBoard.player1.Name && y < 2)
+                    {
+                        unit.DirectAttack(p2);
+                        gameBoard.board[unit.Coordinates.Keys.First(), unit.Coordinates.Values.First()] = null;
+                        p.units.Remove(unit);
+                    }
+                    
+                    else if (gameBoard.board[x, y - 2] != null && gameBoard.board[x, y - 1].Owner != unit.Owner)
+                    {
+                        Unit unit2 = gameBoard.board[x, y - 2];
+                        enemyHp = unit.Attack(unit2);
+                        if (enemyHp < 0)
+                        {
+                            gameBoard.board[unit2.Coordinates.Keys.First(), unit2.Coordinates.Values.First()] = null;
+                            p2.units.Remove(unit2);
+                            p2.Health += enemyHp;
+                        }
+                    }
+                    else if (gameBoard.board[x, y - 1] != null && gameBoard.board[x, y - 1].Owner != unit.Owner)
+                    {
+                        Unit unit2 = gameBoard.board[x, y - 1];
+                        enemyHp = unit.Attack(unit2);
+                        if (enemyHp <= 0)
+                        {
+                            gameBoard.board[unit2.Coordinates.Keys.First(), unit2.Coordinates.Values.First()] = null;
+                            p2.units.Remove(unit2);
+                            p2.Health += enemyHp;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n Keep fighting with the air dummy!\n");
+                    }
+                }
+                else
+                {
+                    if (p.Name == gameBoard.player1.Name && y < 1)
+                    {
+                        unit.DirectAttack(p2);
+                        gameBoard.board[unit.Coordinates.Keys.First(), unit.Coordinates.Values.First()] = null;
+                        p.units.Remove(unit);
+                    }
+                    
+                    else if (gameBoard.board[x, y + 1] != null && gameBoard.board[x, y - 1].Owner != unit.Owner)
+                    {
+                        Unit unit2 = gameBoard.board[x, y - 1];
+                        enemyHp = unit.Attack(unit2);
+                        if (enemyHp <= 0)
+                        {
+                            gameBoard.board[unit2.Coordinates.Keys.First(), unit2.Coordinates.Values.First()] = null;
+                            p2.units.Remove(unit2);
+                            p2.Health += enemyHp;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n Keep fighting with the air dummy!\n");
+                    }
+                }
+            }
         }
     }
 }

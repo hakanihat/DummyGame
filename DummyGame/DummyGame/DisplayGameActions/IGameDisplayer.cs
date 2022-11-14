@@ -19,6 +19,7 @@ namespace DummyGame.Units
 
         public void SelectPlaceForUnit(GameBoard gameBoard,Player p);
         public void MoveAUnit(GameBoard gameBoard, Player p);
+        public void AtkPhase(GameBoard gameBoard, Player p);    
 
        
 

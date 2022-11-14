@@ -10,12 +10,13 @@ namespace DummyGame.Units
     {
         public int Health { get; set; }
         public int Damage { get; set; }
-        
+        public bool IsRanged { get; set; }
         public Player? Owner { get; set; }
 
         public Dictionary<int, int>? Coordinates  { get; set; } = new Dictionary<int, int>();
 
-        protected abstract bool Attack(Unit unit);
+        public abstract int Attack(Unit unit);
+        public abstract void DirectAttack(Player p);
         protected abstract bool IsAlive();
 
         public override string ToString()
